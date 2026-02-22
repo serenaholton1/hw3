@@ -1,21 +1,25 @@
-<h1><%= @place&.name %></h1>
+<div class="place-hero">
+  <h1><%= @place&.name %></h1>
+  <p class="place-subtitle">A snapshot of memories from this place.</p>
+  <p>
+    <a href="/entries/new?place_id=<%= @place&.id %>">Add a new entry</a>
+  </p>
+</div>
 
-<p>
-  <a href="/entries/new?place_id=<%= @place&.id %>">Add a new entry</a>
-</p>
+<div class="entries-section">
+  <h2>Entries</h2>
 
-<h2>Entries</h2>
-
-<% if @entries.any? %>
-  <ul>
-    <% @entries.each do |entry| %>
-      <li>
-        <p><strong><%= entry.title %></strong></p>
-        <p><%= entry.occurred_on %></p>
-        <p><%= entry.description %></p>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No entries yet.</p>
-<% end %>
+  <% if @entries.any? %>
+    <ul class="entries-list">
+      <% @entries.each do |entry| %>
+        <li class="entry-item">
+          <p class="entry-title"><strong><%= entry.title %></strong></p>
+          <p class="entry-date"><%= entry.occurred_on %></p>
+          <p class="entry-description"><%= entry.description %></p>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No entries yet. Add your first memory!</p>
+  <% end %>
+</div>

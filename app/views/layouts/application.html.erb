@@ -1,15 +1,221 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>StarterApp</title>
+    <title>Places Journal</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application" %>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Space+Grotesk:wght@400;500;600&display=swap");
+
+      :root {
+        --ink: #1f1f24;
+        --ink-soft: #3b3b45;
+        --mint: #29d3a0;
+        --mint-dark: #18b789;
+        --sun: #ffb347;
+        --blush: #ffd6e3;
+        --sky: #b7d3ff;
+        --card: #ffffff;
+        --line: rgba(31, 31, 36, 0.08);
+        --shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(1200px 600px at 10% -10%, var(--sky) 0%, transparent 60%),
+          radial-gradient(900px 500px at 90% 10%, var(--blush) 0%, transparent 55%),
+          linear-gradient(180deg, #f7f7fb 0%, #f3f7ff 100%);
+        min-height: 100vh;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 48px 24px 72px;
+      }
+
+      h1, h2 {
+        font-family: "Fraunces", serif;
+        letter-spacing: -0.02em;
+        margin: 0 0 12px;
+      }
+
+      p {
+        margin: 0 0 16px;
+        color: var(--ink-soft);
+      }
+
+      .places-hero,
+      .place-hero,
+      .entry-card {
+        background: var(--card);
+        border-radius: 20px;
+        padding: 28px 28px 24px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+        animation: float-in 500ms ease-out;
+      }
+
+      .places-hero::after,
+      .place-hero::after,
+      .entry-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, rgba(41, 211, 160, 0.12), transparent 60%);
+        pointer-events: none;
+      }
+
+      .places-subtitle,
+      .place-subtitle,
+      .entry-subtitle {
+        font-size: 1.05rem;
+      }
+
+      .places-hero a,
+      .place-hero a {
+        display: inline-block;
+        background: var(--mint);
+        color: #0f172a;
+        padding: 10px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+        box-shadow: 0 8px 20px rgba(41, 211, 160, 0.35);
+        transition: transform 150ms ease, box-shadow 150ms ease;
+      }
+
+      .places-hero a:hover,
+      .place-hero a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(41, 211, 160, 0.4);
+      }
+
+      .places-list,
+      .entries-section {
+        margin-top: 28px;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 16px;
+      }
+
+      .places-list li,
+      .entry-item {
+        background: var(--card);
+        border-radius: 16px;
+        padding: 18px 20px;
+        border: 1px solid var(--line);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
+        transition: transform 120ms ease, box-shadow 120ms ease;
+      }
+
+      .places-list li:hover,
+      .entry-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.1);
+      }
+
+      .places-list a {
+        font-weight: 600;
+        font-size: 1.05rem;
+      }
+
+      .entry-title {
+        margin-bottom: 6px;
+        font-size: 1.1rem;
+        color: var(--ink);
+      }
+
+      .entry-date {
+        font-size: 0.9rem;
+        color: rgba(31, 31, 36, 0.6);
+      }
+
+      form {
+        display: grid;
+        gap: 16px;
+        margin-top: 12px;
+      }
+
+      .field label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(31, 31, 36, 0.12);
+        font-family: inherit;
+        font-size: 1rem;
+        background: #fff;
+      }
+
+      button,
+      input[type="submit"] {
+        background: linear-gradient(135deg, var(--mint), var(--sun));
+        border: none;
+        color: #0f172a;
+        font-weight: 600;
+        padding: 12px 20px;
+        border-radius: 12px;
+        cursor: pointer;
+        box-shadow: 0 10px 20px rgba(255, 179, 71, 0.3);
+        transition: transform 120ms ease, box-shadow 120ms ease;
+      }
+
+      button:hover,
+      input[type="submit"]:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 24px rgba(255, 179, 71, 0.35);
+      }
+
+      @keyframes float-in {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 700px) {
+        .page {
+          padding: 32px 18px 48px;
+        }
+      }
+    </style>
   </head>
 
   <body>
-    <%= yield %>
+    <main class="page">
+      <%= yield %>
+    </main>
   </body>
 </html>

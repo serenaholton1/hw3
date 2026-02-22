@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  root "places#index"
+  
+  root({ :controller => "places", :action => "index" })
+
+  resources "places"
+  resources "entries"
 
   get("/places", { :controller => "places", :action => "index" })
   get("/places/new", { :controller => "places", :action => "new" })

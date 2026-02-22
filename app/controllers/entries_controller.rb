@@ -5,17 +5,18 @@ class EntriesController < ApplicationController
   end
 
   def create
+    # start with a new Entry
+    # assign user-entered form data to Entry's columns
     @entry = Entry.new
     @entry["title"] = params["title"]
     @entry["description"] = params["description"]
     @entry["occurred_on"] = params["occurred_on"]
     @entry["place_id"] = params["place_id"]
 
-    if @entry.save
-      redirect_to "/places/#{@entry.place_id}"
-    else
-      @place = Place.find_by({ :id => @entry.place_id })
-      render "new", status: :unprocessable_entity
-    end
+    # save Entry row
+    @entry.save
+
+    # redirect user
+    redirect_to "/places/#{@entry.place_id}"
   end
 end

@@ -1,6 +1,6 @@
 class PlacesController < ApplicationController
   def index
-    @places = Place.order(:name)
+    @places = Place.all
   end
 
   def new
@@ -8,14 +8,16 @@ class PlacesController < ApplicationController
   end
 
   def create
+    # start with a new Place
+    # assign user-entered form data to Place's columns
     @place = Place.new
     @place["name"] = params["name"]
 
-    if @place.save
-      redirect_to "/places"
-    else
-      render "new", status: :unprocessable_entity
-    end
+    # save Place row
+    @place.save
+
+    # redirect user
+    redirect_to "/places"
   end
 
   def show

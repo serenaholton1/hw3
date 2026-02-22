@@ -1,0 +1,22 @@
+<h1>New Entry for <%= @place&.name %></h1>
+
+<%= form_with url: "/entries", method: :post, scope: nil, local: true do |form| %>
+  <%= form.hidden_field :place_id, value: @place&.id %>
+
+  <p>
+    <%= form.label :title, "Title", for: "title_input" %>
+    <%= form.text_field :title, id: "title_input" %>
+  </p>
+
+  <p>
+    <%= form.label :occurred_on, "Occurred on", for: "occurred_on_input" %>
+    <%= form.date_field :occurred_on, id: "occurred_on_input" %>
+  </p>
+
+  <p>
+    <%= form.label :description, "Description", for: "description_input" %>
+    <%= form.text_area :description, id: "description_input", rows: 5 %>
+  </p>
+
+  <%= form.submit "Create entry" %>
+<% end %>
